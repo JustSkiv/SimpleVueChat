@@ -5,4 +5,4 @@ db_config.php :
     'dsn' => 'mysql:host=localhost;dbname=chat;charset=utf8',
     'user'=>'',
     'pass'=>''
-];```
+];
