@@ -45,6 +45,32 @@ class MainController extends AppController
         );
     }
 
+    public function actionMessages()
+    {
+        if ($this->isAjax()) {
+            $this->layout = false;
+
+            $messageModel = new MessageModel();
+            $messages = MessageModel::findAll();
+
+            $userModel = new UserModel();
+            $users = UserModel::findAll();
+
+            $result = [];
+
+            foreach ($messages as $message) {
+                $result[] = [
+                    'text' => $message['text'],
+                    'name' => $users[$message['user_id']]['name'],
+                ];
+            }
+
+            echo json_encode($result);
+        }
+
+        return 'error';
+    }
+
     public function actionTest()
     {
         if ($this->isAjax()) {
