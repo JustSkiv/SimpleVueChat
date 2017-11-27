@@ -12,20 +12,29 @@ Vue.component('chat-message', {
 });
 
 // создание корневого экземпляра
-new Vue({
+var chat = new Vue({
     el: '#chat-main',
 
     methods: {
         send: function (event) {
-            // `this` внутри методов указывает на экземпляр Vue
-            alert('Привет, ' + this.name + '!');
+            let formData = new FormData();
+            formData.append('text', this.message);
+
+            this.$http.post('/index.php?main/addAjax', formData).then(response => {
+                console.log(response.body);
+                // this.message = response.body;
+
+            }, response => {
+                // error callback
+            });
+
             // `event` — нативное событие DOM
             // if (event) {
             //     alert(event.target.tagName)
             // }
         },
         update: function (event) {
-            this.$http.post('/index.php?main/messages').then(response => {
+            this.$http.post('/index.php?main/getAjax').then(response => {
 
                 console.log(response.body);
                 // this.messages = response.body;
@@ -33,6 +42,16 @@ new Vue({
 
             }, response => {
                 // error callback
+            });
+        },
+        add: function (newMessage) {
+            console.log(newMessage);
+            console.log(newMessage.text);
+
+            this.message = newMessage.text;
+            this.messages.push({
+                name: newMessage.name,
+                text: newMessage.text,
             });
         }
     },
@@ -42,13 +61,17 @@ new Vue({
     },
 
     data: {
-        messages: []
+        messages: [],
+        message: ''
     }
 });
 
 var demo = new Vue({
     el: '#demo',
     data: {
-        message: 'Hello, Singree!'
+        message2: 'Hello, asd!'
     }
 });
+
+ws = new WebSocket("ws://127.0.0.1:8000/?user=Skiv_socketov");
+ws.onmessage = function(evt) {chat.add(JSON.parse(evt.data));};

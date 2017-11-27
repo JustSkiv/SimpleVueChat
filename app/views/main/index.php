@@ -39,7 +39,7 @@
             </div>
 
             <div class="send-wrap ">
-                <textarea v-on:keydown.enter.prevent.stop="send($event)" class="form-control send-message" rows="3"
+                <textarea v-model="message" v-on:keydown.enter.prevent.stop="send($event)" class="form-control send-message" rows="3"
                           placeholder="Write sa reply..."></textarea>
             </div>
             <div class="btn-panel">
@@ -56,8 +56,8 @@
     </div>
 
     <div id="demo" v-cloak>
-        <p>{{message ? message : "no content"}}</p>
-        <input v-model="message">
+        <p>{{message2 ? message2 : "no content"}}</p>
+        <input v-model="message2">
     </div>
 </div>
 

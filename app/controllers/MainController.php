@@ -45,14 +45,38 @@ class MainController extends AppController
         );
     }
 
-    public function actionMessages()
+    public function actionAddAjax()
+    {
+        if ($this->isAjax()) {
+            $this->layout = false;
+
+            $messageModel = new MessageModel();
+            $text = htmlspecialchars($_POST['text']);
+//            $messageId = MessageModel::add($text, 1);
+            $messageId = 1;
+
+            $user = 'Skiv_pumov';
+            $message = $text;
+            // соединяемся с локальным tcp-сервером
+            $instance = stream_socket_client('tcp://127.0.0.1:1234');
+            // отправляем сообщение
+            fwrite($instance, json_encode([
+                'body' => ['text' => "$message", 'name' => $user]
+            ]));
+
+            echo json_encode([$messageId]);
+        }
+
+        return json_encode(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+
+    public function actionGetAjax()
     {
         if ($this->isAjax()) {
             $this->layout = false;
 
             $messageModel = new MessageModel();
             $messages = MessageModel::findAll();
-
             $userModel = new UserModel();
             $users = UserModel::findAll();
 
@@ -68,7 +92,7 @@ class MainController extends AppController
             echo json_encode($result);
         }
 
-        return 'error';
+        return json_encode(json_encode(array('message' => 'ERROR', 'code' => 1337)));
     }
 
     public function actionTest()

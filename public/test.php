@@ -3,9 +3,14 @@
  * Created by Nikolay Tuzov
  */
 
-require '../vendor/libs/rb.php';
-$db = require '../config/config_db.php';
-R::setup($db['dsn'], $db['user'], $db['pass']);
+$p = $_POST;
+
+echo 'asd';
+//require '../vendor/libs/rb.php';
+//$db = require '../config/config_db.php';
+//R::setup($db['dsn'], $db['user'], $db['pass']);
+
+
 //R::freeze(true);
 //R::fancyDebug(TRUE);
 
