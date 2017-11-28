@@ -11,11 +11,11 @@ use Workerman\Worker;
 $users = [];
 
 // создаём ws-сервер, к которому будут подключаться все наши пользователи
-$ws_worker = new Worker("websocket://0.0.0.0:8000");
+$ws_worker = new Worker("websocket://chato.tuzov.su:8000");
 // создаём обработчик, который будет выполняться при запуске ws-сервера
 $ws_worker->onWorkerStart = function () use (&$users) {
     // создаём локальный tcp-сервер, чтобы отправлять на него сообщения из кода нашего сайта
-    $inner_tcp_worker = new Worker("tcp://127.0.0.1:1234");
+    $inner_tcp_worker = new Worker("tcp://chato.tuzov.su:1234");
     // создаём обработчик сообщений, который будет срабатывать,
     // когда на локальный tcp-сокет приходит сообщение
     $inner_tcp_worker->onMessage = function ($connection, $data) use (&$users) {

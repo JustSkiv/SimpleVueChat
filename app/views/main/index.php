@@ -66,7 +66,7 @@
 
 <?php if (!empty($_SESSION['user_id'])): ?>
     <script>
-        ws = new WebSocket("ws://127.0.0.1:8000/?user_id=<?= $_SESSION['user_id']; ?>&user_name=<?= $_SESSION['user_name']; ?>");
+        ws = new WebSocket("ws://chato.tuzov.su:8000/?user_id=<?= $_SESSION['user_id']; ?>&user_name=<?= $_SESSION['user_name']; ?>");
         ws.onmessage = function (evt) {
             chat.add(JSON.parse(evt.data));
         };
