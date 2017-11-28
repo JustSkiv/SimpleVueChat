@@ -21,23 +21,16 @@ var chat = new Vue({
             formData.append('text', this.message);
 
             this.$http.post('/index.php?main/addAjax', formData).then(response => {
-                console.log(response.body);
-                // this.message = response.body;
+                this.message = '';
 
             }, response => {
                 // error callback
             });
-
-            // `event` — нативное событие DOM
-            // if (event) {
-            //     alert(event.target.tagName)
-            // }
         },
         update: function (event) {
             this.$http.post('/index.php?main/getAjax').then(response => {
 
                 console.log(response.body);
-                // this.messages = response.body;
                 this.messages = response.body;
 
             }, response => {
@@ -45,10 +38,6 @@ var chat = new Vue({
             });
         },
         add: function (newMessage) {
-            console.log(newMessage);
-            console.log(newMessage.text);
-
-            this.message = newMessage.text;
             this.messages.push({
                 name: newMessage.name,
                 text: newMessage.text,

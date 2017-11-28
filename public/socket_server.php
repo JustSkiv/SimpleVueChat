@@ -21,12 +21,14 @@ $ws_worker->onWorkerStart = function () use (&$users) {
     $inner_tcp_worker->onMessage = function ($connection, $data) use (&$users) {
         $data = json_decode($data);
 
-        echo $data->body->text . "\n";
+        echo "user sent message: {$data->body->text}\n";
 
 //        var_dump($connection);
         if (isset($users)) {
-            foreach ($users as $user) {
-                $user->send(json_encode($data->body));
+            foreach ($users as $userName => $connections) {
+                foreach ($connections as $id => $connection) {
+                    $connection->send(json_encode($data->body));
+                }
             }
         }
         // отправляем сообщение пользователю по userId
@@ -44,20 +46,38 @@ $ws_worker->onConnect = function ($connection) use (&$users) {
     $connection->onWebSocketConnect = function ($connection) use (&$users) {
         $userName = $_GET['user'];
 
-        echo "{$userName} connected\n";
-
         // при подключении нового пользователя сохраняем get-параметр, который же сами и передали со страницы сайта
-        $users[$userName] = $connection;
+        $users[$userName][$connection->id] = $connection;
         // вместо get-параметра можно также использовать параметр из cookie, например $_COOKIE['PHPSESSID']
+
+        $userConnectionsCount = count($users[$userName]);
+
+        echo "{$userName}[{$connection->id}] connected ({$userConnectionsCount})\n";
     };
 };
 
 $ws_worker->onClose = function ($connection) use (&$users) {
-    // удаляем параметр при отключении пользователя
-    $user = array_search($connection, $users);
+    echo "someone is leaving...\n";
 
-    echo "{$user} leaved\n";
-    unset($users[$user]);
+    // удаляем параметр при отключении пользователя
+    $leavedUser = '<unkonown>';
+
+    foreach ($users as $user => $connections) {
+        $userConnectionsCount = count($connections);
+        echo "is it {$user} ({$userConnectionsCount})?\n";
+
+        if($leavedConnection = array_search($connection, $connections)){
+            $leavedUser = $user;
+
+            unset($users[$user][$connection->id]);
+            echo "{$leavedUser}[{$connection->id}] leaved\n";
+
+            break;
+        } else {
+            echo "no...\n";
+        }
+    }
+
 };
 
 // Run worker
