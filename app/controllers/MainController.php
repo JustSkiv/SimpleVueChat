@@ -57,7 +57,6 @@ class MainController extends AppController
 //            $messageId = MessageModel::add($text, 1);
             $messageId = 1;
 
-            $user = 'Skiv_pumov';
             $message = $text;
             // соединяемся с локальным tcp-сервером
             $instance = stream_socket_client('tcp://127.0.0.1:1234');

@@ -61,6 +61,3 @@ var demo = new Vue({
         message2: 'Hello, asd!'
     }
 });
-
-ws = new WebSocket("ws://127.0.0.1:8000/?user=Skiv_socketov");
-ws.onmessage = function(evt) {chat.add(JSON.parse(evt.data));};

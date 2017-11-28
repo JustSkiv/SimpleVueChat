@@ -25,8 +25,8 @@ $ws_worker->onWorkerStart = function () use (&$users) {
 
 //        var_dump($connection);
         if (isset($users)) {
-            foreach ($users as $userName => $connections) {
-                foreach ($connections as $id => $connection) {
+            foreach ($users as $connections) {
+                foreach ($connections as $connection) {
                     $connection->send(json_encode($data->body));
                 }
             }
@@ -44,15 +44,20 @@ $ws_worker->onWorkerStart = function () use (&$users) {
 
 $ws_worker->onConnect = function ($connection) use (&$users) {
     $connection->onWebSocketConnect = function ($connection) use (&$users) {
-        $userName = $_GET['user'];
+        $userId = $_GET['user_id'];
+        $userName = $_GET['user_name'];
+
+//        if ($_SESSION['user_id'] != $userId && $_SESSION['user_name'] != $userName) {
+//            die("nope!");
+//        }
 
         // при подключении нового пользователя сохраняем get-параметр, который же сами и передали со страницы сайта
-        $users[$userName][$connection->id] = $connection;
+        $users[$userId][$connection->id] = $connection;
         // вместо get-параметра можно также использовать параметр из cookie, например $_COOKIE['PHPSESSID']
 
-        $userConnectionsCount = count($users[$userName]);
+        $userConnectionsCount = count($users[$userId]);
 
-        echo "{$userName}[{$connection->id}] connected ({$userConnectionsCount})\n";
+        echo "{$userName}[{$userId}] connected ({$userConnectionsCount})\n";
     };
 };
 
@@ -66,7 +71,7 @@ $ws_worker->onClose = function ($connection) use (&$users) {
         $userConnectionsCount = count($connections);
         echo "is it {$user} ({$userConnectionsCount})?\n";
 
-        if($leavedConnection = array_search($connection, $connections)){
+        if ($leavedConnection = array_search($connection, $connections)) {
             $leavedUser = $user;
 
             unset($users[$user][$connection->id]);

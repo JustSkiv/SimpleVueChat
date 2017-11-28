@@ -39,7 +39,8 @@
             </div>
 
             <div class="send-wrap ">
-                <textarea v-model="message" v-on:keydown.enter.prevent.stop="send($event)" class="form-control send-message" rows="3"
+                <textarea v-model="message" v-on:keydown.enter.prevent.stop="send($event)"
+                          class="form-control send-message" rows="3"
                           placeholder="Write sa reply..."></textarea>
             </div>
             <div class="btn-panel">
@@ -63,3 +64,11 @@
 
 <script src="/js/chat.js"></script>
 
+<?php if (!empty($_SESSION['user_id'])): ?>
+    <script>
+        ws = new WebSocket("ws://127.0.0.1:8000/?user_id=<?= $_SESSION['user_id']; ?>&user_name=<?= $_SESSION['user_name']; ?>");
+        ws.onmessage = function (evt) {
+            chat.add(JSON.parse(evt.data));
+        };
+    </script>
+<?php endif; ?>
