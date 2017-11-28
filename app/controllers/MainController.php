@@ -59,7 +59,7 @@ class MainController extends AppController
 
             $message = $text;
             // соединяемся с локальным tcp-сервером
-            $instance = stream_socket_client('tcp://127.0.0.1:1234');
+            $instance = stream_socket_client('tcp://chato.tuzov.su:1234');
             // отправляем сообщение
             fwrite($instance, json_encode([
                 'body' => ['text' => "$message", 'name' => $_SESSION['user_name'], 'userId' => $_SESSION['user_id']]
