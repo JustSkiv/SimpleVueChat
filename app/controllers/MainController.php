@@ -13,6 +13,8 @@ class MainController extends AppController
 {
     public function actionIndex()
     {
+//        unset($_SESSION['user_id']);
+//        unset($_SESSION['user_name']);
 //        \R::fancyDebug(true);
 //        App::$app->getList();
 //        $model = new Main();
@@ -47,7 +49,7 @@ class MainController extends AppController
 
     public function actionAddAjax()
     {
-        if ($this->isAjax()) {
+        if ($this->isAjax() && isset($_POST['text']) && !empty($_SESSION['user_id'])) {
             $this->layout = false;
 
             $messageModel = new MessageModel();
@@ -61,7 +63,7 @@ class MainController extends AppController
             $instance = stream_socket_client('tcp://127.0.0.1:1234');
             // отправляем сообщение
             fwrite($instance, json_encode([
-                'body' => ['text' => "$message", 'name' => $user]
+                'body' => ['text' => "$message", 'name' => $_SESSION['user_name'], 'userId' => $_SESSION['user_id']]
             ]));
 
             echo json_encode([$messageId]);
@@ -93,6 +95,52 @@ class MainController extends AppController
         }
 
         return json_encode(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+
+    public function actionSignUp()
+    {
+        if ($this->isAjax()) {
+            $this->layout = false;
+
+            if (empty($_POST['name']) || empty($_POST['password'])) {
+                echo json_encode(['error' => 'Заполни поля!']);
+                return;
+            }
+
+            $name = $_POST['name'];
+            $password = $_POST['password'];
+
+            $userModel = new UserModel();
+            $res = $userModel->add($name, $password);
+
+            echo json_encode($res);
+        }
+    }
+
+    public function actionSignIn()
+    {
+        if ($this->isAjax()) {
+            $this->layout = false;
+
+            if (empty($_POST['name']) || empty($_POST['password'])) {
+                echo json_encode(['error' => 'Заполни поля!']);
+                return;
+            }
+
+            $name = $_POST['name'];
+            $password = $_POST['password'];
+
+            $userModel = new UserModel();
+
+            if ($id = $userModel->login($name, $password)) {
+                $res = ['id' => $id];
+            } else {
+                $res = ['error' => 'oops! =('];
+            }
+
+
+            echo json_encode($res);
+        }
     }
 
     public function actionTest()

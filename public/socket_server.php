@@ -21,7 +21,7 @@ $ws_worker->onWorkerStart = function () use (&$users) {
     $inner_tcp_worker->onMessage = function ($connection, $data) use (&$users) {
         $data = json_decode($data);
 
-        echo "user sent message: {$data->body->text}\n";
+        echo "user {$data->body->name} (id: {$data->body->userId}) sent message: {$data->body->text}\n";
 
 //        var_dump($connection);
         if (isset($users)) {

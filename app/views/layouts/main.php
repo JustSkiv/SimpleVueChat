@@ -44,6 +44,8 @@
 <script src="https://unpkg.com/vue"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
 
+<script src="/js/main.js"></script>
+
 <?php foreach ($this->scripts as $script): ?>
     <?= $script . "\n"; ?>
 <?php endforeach; ?>

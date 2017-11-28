@@ -26,4 +26,14 @@ class AppController extends BaseController
 //            'asd' => 'ttt'
 //        ];
     }
+
+    /**
+     * Перенаправляем запрос по указанному адресу
+     * @param $url
+     */
+    public function redirect($url)
+    {
+        header('Location: ' . $url);
+        exit;
+    }
 }
