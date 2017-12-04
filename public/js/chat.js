@@ -32,7 +32,6 @@ var chat = new Vue({
 
                 console.log(response.body);
                 this.messages = response.body;
-                this.scrollToEnd();
 
             }, response => {
                 // error callback
@@ -44,6 +43,8 @@ var chat = new Vue({
                 text: newMessage.text,
                 image: newMessage.image,
             });
+            this.scrollToEnd();
+
         },
         scrollToEnd: function() {
             let container = this.$el.querySelector("#messages");
