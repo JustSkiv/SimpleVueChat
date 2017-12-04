@@ -28,12 +28,12 @@
     <div class="row" id="chat-main">
         <?php require_once("partial/_contacts.php"); ?>
         <div class="message-wrap col-lg-8">
-            <div class="msg-wrap" v-cloak>
+            <div id="messages" class="msg-wrap" v-cloak>
                 <div v-for="message in messages">
                     <chat-message
                             :name="message.name"
                             :text="message.text"
-                            image="/img/av1.jpg"
+                            :image="message.image"
                             time="23:15"></chat-message>
                 </div>
             </div>
@@ -66,7 +66,7 @@
 
 <?php if (!empty($_SESSION['user_id'])): ?>
     <script>
-        ws = new WebSocket("ws://chato.tuzov.su:8000/?user_id=<?= $_SESSION['user_id']; ?>&user_name=<?= $_SESSION['user_name']; ?>");
+        ws = new WebSocket("ws://<?= $host; ?>:8000/?user_id=<?= $_SESSION['user_id']; ?>&user_name=<?= $_SESSION['user_name']; ?>");
         ws.onmessage = function (evt) {
             chat.add(JSON.parse(evt.data));
         };

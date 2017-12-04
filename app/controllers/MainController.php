@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+
 use app\models\MessageModel;
 use app\models\UserModel;
 use vendor\core\base\View;
@@ -34,6 +35,8 @@ class MainController extends AppController
         $userModel = new UserModel();
         $users = UserModel::findAll();
 
+        $host = $this->localConfig['host'];
+
 //        $menu = $this->menu;
 
         View::setMeta([
@@ -43,7 +46,7 @@ class MainController extends AppController
         ]);
 
         $this->setData(
-            compact('messages', 'users')
+            compact('messages', 'users', 'host')
         );
     }
 
@@ -59,7 +62,7 @@ class MainController extends AppController
 
             $message = $text;
             // соединяемся с локальным tcp-сервером
-            $instance = stream_socket_client('tcp://chato.tuzov.su:1234');
+            $instance = stream_socket_client("tcp://{$this->localConfig['host']}:1234");
             // отправляем сообщение
             fwrite($instance, json_encode([
                 'body' => ['text' => "$message", 'name' => $_SESSION['user_name'], 'userId' => $_SESSION['user_id']]
@@ -84,9 +87,12 @@ class MainController extends AppController
             $result = [];
 
             foreach ($messages as $message) {
+                $userId = $message['user_id'];
+
                 $result[] = [
                     'text' => $message['text'],
-                    'name' => $users[$message['user_id']]['name'],
+                    'name' => $users[$userId]['name'],
+                    'image' => UserModel::getAvatarLink($userId),
                 ];
             }
 

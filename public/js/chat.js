@@ -22,6 +22,7 @@ var chat = new Vue({
 
             this.$http.post('/index.php?main/addAjax', formData).then(response => {
                 this.message = '';
+                this.scrollToEnd();
 
             }, response => {
                 // error callback
@@ -42,7 +43,11 @@ var chat = new Vue({
                 name: newMessage.name,
                 text: newMessage.text,
             });
-        }
+        },
+        scrollToEnd: function() {
+            let container = this.$el.querySelector("#messages");
+            container.scrollTop = container.scrollHeight;
+        },
     },
 
     beforeMount() {

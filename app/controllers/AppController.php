@@ -14,12 +14,16 @@ class AppController extends BaseController
     public $menu;
     public $meta = [];
 
+    public $localConfig;
+
     /**
      * AppController constructor.
      */
     public function __construct($route)
     {
         parent::__construct($route);
+
+        $this->localConfig = require_once '../config/local.php';
 
 //        new Main();
 //        $this->menu = [

@@ -2,6 +2,7 @@
 /**
  * Created by Nikolay Tuzov
  */
+
 use vendor\core\Router;
 
 $query = rtrim($_SERVER['QUERY_STRING'], '/');

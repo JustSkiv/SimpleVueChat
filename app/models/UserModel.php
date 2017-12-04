@@ -48,4 +48,12 @@ class UserModel extends BaseModel
 
         return false;
     }
+
+    public static function getAvatarLink($userId)
+    {
+        $user = \R::findOne('user', ' id = ? ', [$userId]);
+        $avaNum = $user['avatar'];
+
+        return "/img/avatars/{$avaNum}.jpg";
+    }
 }
