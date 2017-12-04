@@ -42,6 +42,7 @@ var chat = new Vue({
             this.messages.push({
                 name: newMessage.name,
                 text: newMessage.text,
+                image: newMessage.image,
             });
         },
         scrollToEnd: function() {

@@ -60,13 +60,22 @@ class MainController extends AppController
 //            $messageId = MessageModel::add($text, 1);
             $messageId = 1;
 
+            $userModel = new UserModel();
+            $avatarLink = $userModel::getAvatarLink($_SESSION['user_id']);
+
             $message = $text;
             // соединяемся с локальным tcp-сервером
             $instance = stream_socket_client("tcp://{$this->localConfig['host']}:1234");
             // отправляем сообщение
-            fwrite($instance, json_encode([
-                'body' => ['text' => "$message", 'name' => $_SESSION['user_name'], 'userId' => $_SESSION['user_id']]
-            ]));
+            $messageData = [
+                'body' => [
+                    'text' => "$message",
+                    'name' => $_SESSION['user_name'],
+                    'userId' => $_SESSION['user_id'],
+                    'image' => $avatarLink,
+                ]
+            ];
+            fwrite($instance, json_encode($messageData));
 
             echo json_encode([$messageId]);
         }
@@ -99,7 +108,7 @@ class MainController extends AppController
             echo json_encode($result);
         }
 
-        return json_encode(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+        return json_encode(array('message' => 'ERROR', 'code' => 1337));
     }
 
     public function actionSignUp()
