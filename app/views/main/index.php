@@ -36,6 +36,8 @@
                             :image="message.image"
                             time="23:15"></chat-message>
                 </div>
+                <br />
+                <br />
             </div>
 
             <div class="send-wrap ">
@@ -49,8 +51,8 @@
                 <button v-on:click="send" class="col-lg-4 text-right btn send-message-btn pull-right">
                     <i class="fa fa-plus"></i> Send Message
                 </button>
-                <button v-on:click="update" class="col-lg-4 text-right btn send-message-btn pull-right">
-                    <i class="glyphicon glyphicon-sunglasses"></i> Update
+                <button v-on:click="scrollToEnd" class="col-lg-4 text-right btn send-message-btn pull-right">
+                    <i class="glyphicon glyphicon-sunglasses"></i> Scroll down
                 </button>
             </div>
         </div>

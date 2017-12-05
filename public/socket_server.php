@@ -66,7 +66,7 @@ $ws_worker->onClose = function ($connection) use (&$users) {
     echo "someone is leaving...\n";
 
     // удаляем параметр при отключении пользователя
-    $leavedUser = '<unkonown>';
+//    $leavedUser = '<unkonown>';
 
     foreach ($users as $user => $connections) {
         $userConnectionsCount = count($connections);

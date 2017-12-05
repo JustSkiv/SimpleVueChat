@@ -12,26 +12,28 @@ Vue.component('chat-message', {
 });
 
 // создание корневого экземпляра
-var chat = new Vue({
+let chat = new Vue({
     el: '#chat-main',
 
+    data: {
+        messages: [],
+        message: ''
+    },
+
     methods: {
-        send: function (event) {
+        send: function () {
             let formData = new FormData();
             formData.append('text', this.message);
 
             this.$http.post('/index.php?main/addAjax', formData).then(response => {
                 this.message = '';
-                this.scrollToEnd();
 
             }, response => {
                 // error callback
             });
         },
-        update: function (event) {
+        updateMessages: function (event) {
             this.$http.post('/index.php?main/getAjax').then(response => {
-
-                console.log(response.body);
                 this.messages = response.body;
 
             }, response => {
@@ -44,6 +46,7 @@ var chat = new Vue({
                 text: newMessage.text,
                 image: newMessage.image,
             });
+            this.$forceUpdate();
             this.scrollToEnd();
         },
         scrollToEnd: function() {
@@ -53,16 +56,11 @@ var chat = new Vue({
     },
 
     beforeMount() {
-        this.update()
+        this.updateMessages()
     },
-
-    data: {
-        messages: [],
-        message: ''
-    }
 });
 
-var demo = new Vue({
+let demo = new Vue({
     el: '#demo',
     data: {
         message2: 'Hello, asd!'
