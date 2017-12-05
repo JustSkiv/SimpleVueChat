@@ -49,6 +49,11 @@ class UserModel extends BaseModel
         return false;
     }
 
+    public static function logout()
+    {
+        return session_destroy();
+    }
+
     public static function getAvatarLink($userId)
     {
         $user = \R::findOne('user', ' id = ? ', [$userId]);

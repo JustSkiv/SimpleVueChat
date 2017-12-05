@@ -22,6 +22,10 @@ let chat = new Vue({
 
     methods: {
         send: function () {
+            if(!this.message) {
+                return false;
+            }
+
             let formData = new FormData();
             formData.append('text', this.message);
 
@@ -46,13 +50,17 @@ let chat = new Vue({
                 text: newMessage.text,
                 image: newMessage.image,
             });
-            this.$forceUpdate();
-            this.scrollToEnd();
+            // this.$forceUpdate();
+            // this.scrollToEnd();
         },
         scrollToEnd: function() {
             let container = this.$el.querySelector("#messages");
             container.scrollTop = container.scrollHeight;
         },
+    },
+
+    updated(){
+        this.scrollToEnd();
     },
 
     beforeMount() {

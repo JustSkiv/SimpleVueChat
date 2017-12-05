@@ -9,6 +9,8 @@ class MessageModel extends BaseModel
 {
     public static $table = 'message';
 
+    const MESSAGE_MAX_SIZE = 2000;
+
     /**
      * @param $text
      * @param $userId

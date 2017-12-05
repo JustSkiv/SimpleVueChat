@@ -28,8 +28,6 @@ let modal = new Vue({
             formData.append('password', this.passwordLogin);
 
             this.$http.post('/index.php?main/signIn', formData).then(response => {
-                console.log(response.body);
-
                 if(response.body['id']) {
                     this.success = true;
                     window.location.replace("/");

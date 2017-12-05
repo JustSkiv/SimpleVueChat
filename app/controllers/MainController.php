@@ -14,8 +14,6 @@ class MainController extends AppController
 {
     public function actionIndex()
     {
-//        unset($_SESSION['user_id']);
-//        unset($_SESSION['user_name']);
 //        \R::fancyDebug(true);
 //        App::$app->getList();
 //        $model = new Main();
@@ -55,8 +53,14 @@ class MainController extends AppController
         if ($this->isAjax() && isset($_POST['text']) && !empty($_SESSION['user_id'])) {
             $this->layout = false;
 
+            $text = $_POST['text'];
+            if (empty($text) || strlen($text) > MessageModel::MESSAGE_MAX_SIZE) {
+                return false;
+            }
+
             $messageModel = new MessageModel();
-            $text = htmlspecialchars($_POST['text']);
+            $text = htmlspecialchars($text);
+
 //            $messageId = MessageModel::add($text, 1);
             $messageId = 1;
 
@@ -152,6 +156,23 @@ class MainController extends AppController
                 $res = ['error' => 'oops! =('];
             }
 
+
+            echo json_encode($res);
+        }
+    }
+
+    public function actionSignOut()
+    {
+        if ($this->isAjax()) {
+            $this->layout = false;
+
+            $userModel = new UserModel();
+
+            if ($userModel->logout()) {
+                $res = ['result' => 'success'];
+            } else {
+                $res = ['error' => 'oops! =('];
+            }
 
             echo json_encode($res);
         }

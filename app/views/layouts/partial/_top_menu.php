@@ -42,7 +42,12 @@
                     <li><?php require_once '_sign_up.php'; ?></li>
                     <li><a href="#" data-toggle="modal" data-target="#myModal">Регистрация/Вход</a></li>
                 <?php else: ?>
-                    <li><a href="#" data-toggle="modal" data-target="#myModal">Выйти (<?= $_SESSION['user_name'] ?>) - %пока не работает%</a></li>
+                    <li><a href="#"><img class="border-top-0" style="height: 20px; padding-right: 5px;"
+                                         src="/img/avatars/1.jpg"/><?= $_SESSION['user_name'] ?></a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#myModal">Выйти</a></li>
+                    <li>
+                        <a href="#" onclick="logout()">Выйти2</a>
+                    </li>
                 <?php endif; ?>
             </ul>
         </div><!-- /.navbar-collapse -->

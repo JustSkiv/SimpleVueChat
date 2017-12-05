@@ -36,8 +36,6 @@
                             :image="message.image"
                             time="23:15"></chat-message>
                 </div>
-                <br />
-                <br />
             </div>
 
             <div class="send-wrap ">
